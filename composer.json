@@ -1,0 +1,32 @@
+{
+    "name": "dbierer/openrouter-php-sdk",
+    "description": "Unofficial PHP SDK for the OpenRouter.ai API, modeled after the official Python SDK.",
+    "type": "library",
+    "license": "MIT",
+    "keywords": ["openrouter", "llm", "ai", "sdk", "chat completions"],
+    "homepage": "https://github.com/dbierer/openrouter_php_sdk",
+    "require": {
+        "php": "^8.1",
+        "ext-json": "*",
+        "guzzlehttp/guzzle": "^7.5",
+        "psr/http-message": "^1.1 || ^2.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^10.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "OpenRouter\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "OpenRouter\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": "phpunit"
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}
