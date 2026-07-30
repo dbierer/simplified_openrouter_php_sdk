@@ -19,7 +19,9 @@ This simplified PHP SDK, by design, covers only the subset most developers need.
 more resources later if you need them. Contributions welcome!
 
 This SDK leverages the Guzzle HTTP client, and produces PSR-7 compliant requests and responses.
-
+IMPORTANT: this is an Alpha release. If you need something more stable and production-ready, 
+consider using [eatzy/openrouter-php-sdk](https://packagist.org/packages/eatzy/openrouter-php-sdk) instead.
+ 
 ## Requirements
 
 - PHP 8.1+
