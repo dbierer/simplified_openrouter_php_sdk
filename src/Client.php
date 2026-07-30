@@ -1,7 +1,5 @@
 <?php
-
 declare(strict_types=1);
-
 namespace OpenRouter;
 
 use GuzzleHttp\ClientInterface;
@@ -73,12 +71,12 @@ final class Client
             client: $httpClient,
         );
 
-        $this->chat = new ChatResource($transport);
-        $this->models = new ModelsResource($transport);
-        $this->endpoints = new EndpointsResource($transport);
+        $this->chat        = new ChatResource($transport);
+        $this->models      = new ModelsResource($transport);
+        $this->endpoints   = new EndpointsResource($transport);
         $this->generations = new GenerationsResource($transport);
-        $this->credits = new CreditsResource($transport);
-        $this->apiKeys = new ApiKeysResource($transport);
-        $this->embeddings = new EmbeddingsResource($transport);
+        $this->credits     = new CreditsResource($transport);
+        $this->apiKeys     = new ApiKeysResource($transport);
+        $this->embeddings  = new EmbeddingsResource($transport);
     }
 }
