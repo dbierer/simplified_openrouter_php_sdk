@@ -1,5 +1,5 @@
 {
-    "name": "dbierer/openrouter-php-sdk",
+    "name": "unlikelysource/simplified-openrouter-php-sdk",
     "description": "Unofficial PHP SDK for the OpenRouter.ai API, modeled after the official Python SDK.",
     "type": "library",
     "license": "MIT",

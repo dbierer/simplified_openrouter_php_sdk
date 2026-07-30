@@ -1,8 +1,8 @@
-# openrouter_php_sdk
+# simplified_openrouter_php_sdk
 
 An unofficial PHP SDK for the [OpenRouter.ai](https://openrouter.ai) API, modeled after the
 [official Python SDK](https://github.com/OpenRouterTeam/python-sdk). This is a hand-written,
-idiomatic PHP client — not a generated 1:1 port — covering the core of the OpenRouter API:
+idiomatic PHP client, not a generated 1:1 port — covering the core of the OpenRouter API:
 
 - **Chat Completions** — including streaming
 - **Models** — list, get, count
@@ -14,9 +14,11 @@ idiomatic PHP client — not a generated 1:1 port — covering the core of the O
 
 The Python SDK is auto-generated from OpenRouter's OpenAPI spec and covers ~90 endpoint groups
 (TTS/STT, video generation, OAuth, workspaces, BYOK, datasets, guardrails, analytics, and more).
-This PHP SDK deliberately covers the subset most consumers need. The architecture (a `Transport`
-class plus one resource class per endpoint group) makes it straightforward to add more resources
-later if you need them — contributions welcome.
+This simplified PHP SDK, by design, covers only the subset most developers need. The architecture 
+(a `Transport`class plus one resource class per endpoint group) makes it straightforward to add 
+more resources later if you need them. Contributions welcome!
+
+This SDK leverages the Guzzle HTTP client, and produces PSR-7 compliant requests and responses.
 
 ## Requirements
 
@@ -26,7 +28,7 @@ later if you need them — contributions welcome.
 ## Installation
 
 ```bash
-composer require dbierer/openrouter-php-sdk
+composer require unlikelysource/simplified-openrouter-php-sdk
 ```
 
 ## Quick start
