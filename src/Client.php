@@ -11,6 +11,8 @@ use OpenRouter\Resources\CreditsResource;
 use OpenRouter\Resources\EmbeddingsResource;
 use OpenRouter\Resources\EndpointsResource;
 use OpenRouter\Resources\GenerationsResource;
+use OpenRouter\Resources\ImagesResource;
+use OpenRouter\Resources\SpeechResource;
 use OpenRouter\Resources\ModelsResource;
 
 /**
@@ -34,6 +36,8 @@ final class Client
     public readonly CreditsResource $credits;
     public readonly ApiKeysResource $apiKeys;
     public readonly EmbeddingsResource $embeddings;
+    public readonly ImagesResource $images;
+    public readonly SpeechResource $speech;
 
     /**
      * @param string $apiKey Your OpenRouter API key. Falls back to the
@@ -78,5 +82,7 @@ final class Client
         $this->credits     = new CreditsResource($transport);
         $this->apiKeys     = new ApiKeysResource($transport);
         $this->embeddings  = new EmbeddingsResource($transport);
+        $this->images      = new ImagesResource($transport);
+        $this->speech      = new SpeechResource($transport);
     }
 }

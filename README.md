@@ -11,6 +11,7 @@ idiomatic PHP client, not a generated 1:1 port — covering the core of the Open
 - **Credits** — account balance
 - **API Keys** — full CRUD (management key required)
 - **Embeddings**
+- **Images** (`/images`) and **Speech / TTS with voice cloning** (`/audio/speech`), each with model-fallback helpers
 
 The Python SDK is auto-generated from OpenRouter's OpenAPI spec and covers ~90 endpoint groups
 (TTS/STT, video generation, OAuth, workspaces, BYOK, datasets, guardrails, analytics, and more).
@@ -115,6 +116,30 @@ $result = $client->embeddings->create([
 ]);
 $vector = $result->data[0]->vector;
 ```
+
+### Images and speech
+
+```php
+use OpenRouter\DTO\InputReference;
+
+// Image generation; tries each model in order. input_references is optional (likeness/style images).
+$img = $client->images->generateWithFallback(
+    ['qwen/qwen-image-3-pro', 'qwen/qwen-image-3'],
+    ['prompt' => 'A lighthouse at dawn', 'size' => '1024x1024',
+     'input_references' => [InputReference::imageFromFile('ref.png')]],
+);
+file_put_contents('out.png', $img->first()->bytes());
+echo $img->model;   // the model that actually answered
+
+// Text-to-speech with a cloned voice (reference clip + its exact transcript).
+$speech = $client->speech->createWithFallback(
+    ['fish-audio/s2.1-pro-free:free', 'fish-audio/s2.1-pro'],
+    ['input' => 'Hello there.', 'input_references' => InputReference::voice('me.wav', 'exact words spoken in me.wav')],
+);
+$speech->save('hello.mp3');
+```
+
+`images->generate()` and `speech->create()` make a single call with the model you pass. `speech->createWithFallback()` retries 408/429/5xx and bad payloads per model before moving to the next. Set a generous `timeoutSeconds` on the `Client` (e.g. 300) for image and TTS calls.
 
 See `examples/` for complete runnable scripts.
 
