@@ -56,4 +56,20 @@ final class SpeechResourceTest extends TestCase
 
         self::assertSame('free', $r->model);   // second attempt on the same model succeeded
     }
+
+    public function testFallbackBackoffUsesSleeper(): void
+    {
+        $f = new MockClientFactory([new Response(429, [], '{"error":{"message":"slow"}}'), $this->audio()]);
+        $slept = [];
+        $client = new Client(apiKey: 'k', httpClient: $f->guzzle, retryConfig: new RetryConfig(
+            maxAttempts: 1,
+            sleeper: function (int $ms) use (&$slept): void {
+                $slept[] = $ms;
+            },
+        ));
+
+        $client->speech->createWithFallback(['free'], ['input' => 'hi'], retries: 2, backoffSeconds: 4);
+
+        self::assertSame([4000], $slept);
+    }
 }

@@ -7,6 +7,10 @@ namespace OpenRouter\Http;
 /**
  * Exponential-backoff retry policy, applied to connection failures and 5XX
  * responses. Defaults mirror the official Python SDK.
+ *
+ * $sleeper replaces the blocking usleep() between attempts. It receives the
+ * delay in milliseconds, so an event loop or Fiber scheduler can suspend the
+ * current task instead of pausing the whole process.
  */
 final class RetryConfig
 {
@@ -16,6 +20,7 @@ final class RetryConfig
         public readonly int $maxIntervalMs = 60000,
         public readonly float $backoffMultiplier = 1.5,
         public readonly int $maxElapsedTimeMs = 3600000,
+        public readonly ?\Closure $sleeper = null,
     ) {
     }
 

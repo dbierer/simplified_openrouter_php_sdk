@@ -58,7 +58,7 @@ final class SpeechResource extends AbstractResource
                     $errors[] = "[$model #$attempt] " . $e->getMessage();
                 }
                 if ($attempt < $retries && $backoffSeconds > 0) {
-                    sleep($backoffSeconds * $attempt);
+                    $this->transport->pause($backoffSeconds * $attempt * 1000);
                 }
             }
         }

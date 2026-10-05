@@ -116,7 +116,21 @@ final class Transport
 
     private function sleep(int $attempt): void
     {
-        $delayMs = $this->retryConfig->delayForAttempt($attempt);
+        $this->pause($this->retryConfig->delayForAttempt($attempt));
+    }
+
+    /**
+     * Wait between attempts: through RetryConfig's sleeper when one is set,
+     * otherwise a blocking usleep().
+     */
+    public function pause(int $delayMs): void
+    {
+        if ($this->retryConfig->sleeper !== null) {
+            ($this->retryConfig->sleeper)($delayMs);
+
+            return;
+        }
+
         usleep($delayMs * 1000);
     }
 

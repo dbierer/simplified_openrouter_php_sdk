@@ -162,6 +162,22 @@ $client = new Client(
 You can also inject your own Guzzle client (e.g. with custom middleware or a mock handler for
 testing) via the `httpClient` constructor argument.
 
+By default the wait between retries is a blocking `usleep()`. To use the SDK from an event loop or
+a PHP Fiber scheduler, pass a `sleeper` closure to `RetryConfig`; it receives the delay in
+milliseconds and is used for the transport's backoff and for `speech->createWithFallback()`:
+
+```php
+$retryConfig = new RetryConfig(
+    maxAttempts: 3,
+    sleeper: function (int $ms): void {
+        $wake = microtime(true) + $ms / 1000;
+        while (microtime(true) < $wake) {
+            \Fiber::suspend();   // let the scheduler run other requests meanwhile
+        }
+    },
+);
+```
+
 ## Error handling
 
 Requests that receive an HTTP error status throw a subclass of `OpenRouter\Exceptions\ApiException`,

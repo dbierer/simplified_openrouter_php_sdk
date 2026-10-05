@@ -66,4 +66,29 @@ final class ErrorHandlingTest extends TestCase
         $this->expectException(InternalServerException::class);
         $client->models->list();
     }
+
+    public function testRetryBackoffUsesSleeper(): void
+    {
+        $factory = new MockClientFactory([
+            new Response(500, [], json_encode(['error' => ['code' => 500, 'message' => 'boom']])),
+            new Response(200, [], json_encode(['data' => [], 'links' => ['next' => null], 'total_count' => 0])),
+        ]);
+        $slept = [];
+
+        $client = new Client(
+            apiKey: 'test-key',
+            httpClient: $factory->guzzle,
+            retryConfig: new RetryConfig(
+                maxAttempts: 3,
+                initialIntervalMs: 250,
+                sleeper: function (int $ms) use (&$slept): void {
+                    $slept[] = $ms;
+                },
+            ),
+        );
+
+        $client->models->list();
+
+        self::assertSame([250], $slept);
+    }
 }
